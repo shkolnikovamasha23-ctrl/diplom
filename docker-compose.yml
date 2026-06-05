@@ -1,0 +1,13 @@
+services:
+  edusim:
+    build: .
+    container_name: edusim_diploma
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./edusim/data:/app/edusim/data
+      - ./edusim/static/uploads:/app/edusim/static/uploads
+      - ./edusim/generated:/app/edusim/generated
+    environment:
+      - SECRET_KEY=change-me-in-production
+      - DATABASE_PATH=/app/edusim/data/edusim.db
