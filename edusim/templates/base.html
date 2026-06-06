@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or project_title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('public.index') }}">EduSim</a>
+  <nav class="nav">
+    <a href="{{ url_for('public.index') }}">Главная</a>
+    <a href="{{ url_for('public.scenarios') }}">Сценарии</a>
+    <a href="{{ url_for('public.page', slug='methodology') }}">Методика</a>
+    <a href="{{ url_for('public.page', slug='cases') }}">Кейсы</a>
+    <a href="{{ url_for('public.page', slug='about') }}">О проекте</a>
+    <a href="{{ url_for('public.feedback') }}">Обратная связь</a>
+    <a href="{{ url_for('public.page', slug='help') }}">Справка</a>
+    <a href="{{ url_for('public.page', slug='faq') }}">FAQ</a>
+    <a href="{{ url_for('public.page', slug='contacts') }}">Контакты</a>
+    <a href="{{ url_for('public.checklist') }}">Чек-лист</a>
+    <a href="{{ url_for('auth.login') }}">Вход</a>
+  </nav>
+</header>
+<main class="layout">
+  <aside class="sidebar">
+    <a href="{{ url_for('cabinet.dashboard') }}">Личный кабинет</a>
+    <a href="{{ url_for('cabinet.simulator') }}">Пройти симулятор</a>
+    <a href="{{ url_for('cabinet.attempts') }}">Мои результаты</a>
+    <a href="{{ url_for('cabinet.files') }}">Файлы</a>
+    <a href="{{ url_for('cabinet.documents') }}">Документы</a>
+    <a href="{{ url_for('admin.dashboard') }}">Админ-панель</a>
+  </aside>
+  <section class="content">
+    {% if breadcrumbs %}
+    <div class="breadcrumbs">
+      {% for label, link in breadcrumbs %}
+        {% if link %}<a href="{{ link }}">{{ label }}</a>{% else %}<span>{{ label }}</span>{% endif %}
+        {% if not loop.last %}<b>›</b>{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </section>
+</main>
+<footer class="footer">ВКР: разработка образовательного симулятора. Автор: {{ author_name }}.</footer>
+</body>
+</html>
