@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<section class="card narrow"><h1>Профиль</h1><form method="post" class="form"><label>ФИО<input name="full_name" value="{{ user.full_name }}"></label><label>E-mail<input name="email" value="{{ user.email }}"></label><button class="btn">Сохранить</button></form></section>{% endblock %}
