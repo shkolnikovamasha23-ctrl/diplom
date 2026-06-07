@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<h1>Достижения</h1><div class="grid">{% for a in achievements %}<article class="card"><h2>{{ a.title }}</h2><p>{{ a.description }}</p><small>{{ a.awarded_at }}</small></article>{% else %}<p>Достижения появятся после успешного прохождения сценариев.</p>{% endfor %}</div>{% endblock %}
