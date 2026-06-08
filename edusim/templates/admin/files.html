@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<h1>Загруженные файлы</h1><table><tr><th>Пользователь</th><th>Файл</th><th>Размер</th><th>Дата</th></tr>{% for f in files %}<tr><td>{{ f.username }}</td><td>{{ f.original_name }}</td><td>{{ f.file_size }}</td><td>{{ f.uploaded_at }}</td></tr>{% endfor %}</table>{% endblock %}
