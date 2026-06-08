@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<h1>Журнал действий</h1><table><tr><th>Дата</th><th>Пользователь</th><th>Действие</th><th>Детали</th></tr>{% for l in logs %}<tr><td>{{ l.created_at }}</td><td>{{ l.username or 'system' }}</td><td>{{ l.action }}</td><td>{{ l.details }}</td></tr>{% endfor %}</table>{% endblock %}

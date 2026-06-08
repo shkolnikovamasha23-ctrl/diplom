@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<h1>Обращения пользователей</h1><table><tr><th>Дата</th><th>Имя</th><th>Тема</th><th>Сообщение</th></tr>{% for f in feedback %}<tr><td>{{ f.created_at }}</td><td>{{ f.name }}</td><td>{{ f.topic }}</td><td>{{ f.message }}</td></tr>{% endfor %}</table>{% endblock %}
