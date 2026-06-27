@@ -9,5 +9,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 RUN mkdir -p edusim/static/uploads edusim/generated edusim/data edusim/exports
-EXPOSE 5000
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "main:app"]
+
+EXPOSE 8080
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:${PORT:-8080} main:app"]
