@@ -1,1 +1,39 @@
-{% extends "base.html" %}{% block content %}<article class="card"><h1>Результат: {{ attempt.scenario_title }}</h1><p>Итоговый балл: <b>{{ attempt.score }}</b></p>{% for a in answers %}<div class="answer {{ 'ok' if a.is_correct else 'bad' }}"><b>{{ a.text }}</b><p>Ответ: {{ a.option_text }}</p><p>{{ a.explanation }}</p></div>{% endfor %}<a class="btn" href="{{ url_for('cabinet.export_docx', attempt_id=attempt.id) }}">Сформировать DOCX</a></article>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<h1>Результат симуляции</h1>
+{% if attempt %}
+<section class="card">
+  <h2>{{ attempt.scenario_title }}</h2>
+  <div class="sim-state">
+    <div><b>Итог</b><span>{{ attempt.ending or attempt.status }}</span></div>
+    <div><b>Баллы</b><span>{{ attempt.score }}</span></div>
+    <div><b>Время</b><span>{{ attempt.time_spent }} ч</span></div>
+    <div><b>Бюджет</b><span>{{ attempt.budget_spent }} ₽</span></div>
+    <div><b>Риск</b><span>{{ attempt.risk_level }}/100</span></div>
+    <div><b>Качество</b><span>{{ attempt.quality }}/100</span></div>
+    <div><b>Регламент</b><span>{{ attempt.compliance }}/100</span></div>
+  </div>
+  <p>{{ attempt.final_report }}</p>
+  <a class="button" href="{{ url_for('cabinet.export_docx', attempt_id=attempt.id) }}">Скачать отчет DOCX</a>
+</section>
+
+{% if events %}
+<section class="card">
+<h2>Ход симуляции</h2>
+<table>
+<tr><th>Этап</th><th>Выбор</th><th>Обратная связь</th><th>Файл</th></tr>
+{% for e in events %}
+<tr><td>{{ e.step_title }}</td><td>{{ e.choice_text }}</td><td>{{ e.feedback }}</td><td>{{ e.original_name or '—' }}</td></tr>
+{% endfor %}
+</table>
+</section>
+{% elif answers %}
+<section class="card">
+<h2>Ответы</h2>
+{% for a in answers %}<p><b>{{ a.text }}</b><br>{{ a.option_text }} — {{ 'верно' if a.is_correct else 'неверно' }}. {{ a.explanation }}</p>{% endfor %}
+</section>
+{% endif %}
+{% else %}
+<p>Попытка не найдена.</p>
+{% endif %}
+{% endblock %}

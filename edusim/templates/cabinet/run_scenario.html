@@ -1,1 +1,52 @@
-{% extends "base.html" %}{% block content %}<form method="post" class="card"><h1>{{ scenario.title }}</h1><p>{{ scenario.learning_goal }}</p>{% for q in questions %}<fieldset class="question"><legend>{{ loop.index }}. {{ q.text }}</legend>{% for o in options[q.id] %}<label class="radio"><input type="radio" name="q_{{ q.id }}" value="{{ o.id }}" required> {{ o.text }}</label>{% endfor %}</fieldset>{% endfor %}<button class="btn">Завершить сценарий</button></form>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ scenario.title }}</h1>
+<div class="sim-state">
+  <div><b>Баллы</b><span>{{ attempt.score }}</span></div>
+  <div><b>Время</b><span>{{ attempt.time_spent }} ч</span></div>
+  <div><b>Бюджет</b><span>{{ attempt.budget_spent }} ₽</span></div>
+  <div><b>Риск</b><span>{{ attempt.risk_level }}/100</span></div>
+  <div><b>Качество</b><span>{{ attempt.quality }}/100</span></div>
+  <div><b>Регламент</b><span>{{ attempt.compliance }}/100</span></div>
+</div>
+
+<section class="card scenario-step">
+  <p class="muted">Текущий этап</p>
+  <h2>{{ step.title }}</h2>
+  <p>{{ step.context }}</p>
+  {% if step.file_required %}
+    <div class="alert warning"><b>На этом этапе нужен файл.</b> {{ step.file_instruction }}</div>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    <h3>Выберите действие</h3>
+    {% for c in choices %}
+      <label class="choice">
+        <input type="radio" name="choice_id" value="{{ c.id }}" required>
+        <span>{{ c.text }}</span>
+        <small>Влияние: время {{ c.delta_time }} ч, бюджет {{ c.delta_budget }} ₽, риск {{ c.delta_risk }}, качество {{ c.delta_quality }}, регламент {{ c.delta_compliance }}, баллы {{ c.score }}</small>
+      </label>
+    {% endfor %}
+    <label class="field">Файл-артефакт этапа
+      <input type="file" name="evidence_file" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg">
+    </label>
+    <button class="button" type="submit">Принять решение</button>
+  </form>
+</section>
+
+{% if events %}
+<section class="card">
+  <h2>История решений</h2>
+  <table>
+    <tr><th>Этап</th><th>Решение</th><th>Файл</th><th>Итог состояния</th></tr>
+    {% for e in events %}
+    <tr>
+      <td>{{ e.step_title }}</td>
+      <td>{{ e.choice_text }}<br><small>{{ e.feedback }}</small></td>
+      <td>{{ e.original_name or '—' }}</td>
+      <td>балл {{ e.quality }}/100, риск {{ e.risk_level }}/100, время {{ e.time_spent }} ч</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endif %}
+{% endblock %}

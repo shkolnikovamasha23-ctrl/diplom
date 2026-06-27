@@ -1,1 +1,17 @@
-{% extends "base.html" %}{% block content %}<section class="card"><h1>Файловое хранилище</h1><form method="post" enctype="multipart/form-data" class="form"><label>Файл<input type="file" name="file" required></label><button class="btn">Загрузить</button></form><table><tr><th>Имя</th><th>Размер</th><th>Дата</th></tr>{% for f in files %}<tr><td>{{ f.original_name }}</td><td>{{ f.file_size }}</td><td>{{ f.uploaded_at }}</td></tr>{% endfor %}</table></section>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<h1>Файлы-артефакты</h1>
+<p>Файлы используются не как абстрактное хранилище, а как часть сценария: ТЗ, отчеты, скриншоты ошибок и другие доказательства принятых решений.</p>
+<form method="post" enctype="multipart/form-data" class="card">
+  <label class="field">Загрузить общий файл
+    <input type="file" name="file" required>
+  </label>
+  <button class="button" type="submit">Загрузить</button>
+</form>
+<table>
+<tr><th>Файл</th><th>Размер</th><th>Назначение</th><th>Дата</th></tr>
+{% for f in files %}
+<tr><td>{{ f.original_name }}</td><td>{{ f.file_size }} байт</td><td>{{ f.purpose }}</td><td>{{ f.uploaded_at }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}
